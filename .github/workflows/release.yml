@@ -46,7 +46,7 @@ jobs:
           go build \
             -ldflags="-s -w" \
             -o dist/$BINARY_NAME \
-            ./cmd/server
+            ./cmd/raptor
 
       - name: Generate Checksums
         run: |

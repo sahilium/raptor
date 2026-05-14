@@ -1,5 +1,10 @@
 # Raptor
 
+![Go Version](https://img.shields.io/github/go-mod/go-version/sahilium/raptor?style=for-the-badge)
+![Release](https://img.shields.io/github/v/release/sahilium/raptor?style=for-the-badge)
+![License](https://img.shields.io/github/license/sahilium/raptor?style=for-the-badge)
+![Build](https://img.shields.io/github/actions/workflow/status/sahilium/raptor/release.yml?style=for-the-badge)
+
 Raptor is a lightweight infrastructure control plane built on MCP (Model Context Protocol).
 
 It allows AI assistants to safely interact with backend infrastructure using structured tools
@@ -24,7 +29,41 @@ Instead of exposing a raw terminal, Raptor exposes high-level infrastructure ope
 
 ---
 
-## Why?
+## Quick Start
+
+### 1. Install
+
+#### Option A: Download Binary
+Grab the latest stable binary for your platform from the [GitHub Releases](https://github.com/sahilium/raptor/releases) page.
+
+#### Option B: Go Install
+```bash
+go install github.com/sahilium/raptor/cmd/raptor@latest
+```
+
+#### Option C: Build from Source
+```bash
+git clone https://github.com/sahilium/raptor.git
+cd raptor
+go build -o raptor ./cmd/raptor
+```
+
+### 2. Configure
+Set the required SSH environment variables (see `.env.example` for all options):
+```bash
+export RAPTOR_SSH_HOST="prod.example.com"
+export RAPTOR_SSH_USER="deploy"
+```
+
+### 3. Run
+Raptor communicates over `stdio`. You can run it directly to test, or add it to an MCP client like **Claude Desktop**:
+```bash
+./raptor
+```
+
+---
+
+## Why does this exist?
 
 Most infrastructure tooling is either:
 
