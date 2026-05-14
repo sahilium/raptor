@@ -1,4 +1,4 @@
-# Raptor
+# Raptor 🦖
 
 ![Go Version](https://img.shields.io/github/go-mod/go-version/sahilium/raptor?style=for-the-badge)
 ![Release](https://img.shields.io/github/v/release/sahilium/raptor?style=for-the-badge)
@@ -45,7 +45,7 @@ go install github.com/sahilium/raptor/cmd/raptor@latest
 ```bash
 git clone https://github.com/sahilium/raptor.git
 cd raptor
-go build -o raptor ./cmd/raptor
+go build ./cmd/raptor
 ```
 
 ### 2. Configure
@@ -59,6 +59,23 @@ export RAPTOR_SSH_USER="deploy"
 Raptor communicates over `stdio`. You can run it directly to test, or add it to an MCP client like **Claude Desktop**:
 ```bash
 ./raptor
+```
+
+### 4. Claude Desktop setup example (`claude_desktop_config.json`)
+
+```json
+{
+  "mcpServers": {
+    "raptor": {
+      "command": "/path/to/raptor",
+      "env": {
+        "RAPTOR_SSH_HOST": "prod.example.com",
+        "RAPTOR_SSH_USER": "deploy",
+        "RAPTOR_SSH_IDENTITY_FILE": "/home/user/.ssh/id_ed25519"
+      }
+    }
+  }
+}
 ```
 
 ---
@@ -127,6 +144,10 @@ Each tool name maps directly to the MCP `tools/call` method.
 
 ## Design Principles
 
+### Architecture
+
+![Architecture Diagram](./assets/images/architecture.png)
+
 ### Structured operations over shell access
 
 Raptor models infrastructure concepts directly:
@@ -180,7 +201,7 @@ not large-scale orchestration systems.
 ```
 raptor/
   cmd/
-    server/
+    raptor/
       main.go                     # Server entrypoint; registers all tool groups
   internal/
     config/
@@ -225,45 +246,6 @@ See `.env.example` for a template.
 
 ---
 
-## Running
-
-### Build
-
-```sh
-go build -o raptor ./cmd/server
-```
-
-### Run (stdio transport)
-
-```sh
-RAPTOR_SSH_HOST=prod.example.com \
-RAPTOR_SSH_USER=deploy \
-RAPTOR_SSH_IDENTITY_FILE=~/.ssh/id_ed25519 \
-./raptor
-```
-
-The server communicates over stdin/stdout using the MCP protocol and is intended to be
-launched as a subprocess by an MCP-compatible client (e.g. Claude Desktop, a custom agent).
-
-### Claude Desktop example (`claude_desktop_config.json`)
-
-```json
-{
-  "mcpServers": {
-    "raptor": {
-      "command": "/path/to/raptor",
-      "env": {
-        "RAPTOR_SSH_HOST": "prod.example.com",
-        "RAPTOR_SSH_USER": "deploy",
-        "RAPTOR_SSH_IDENTITY_FILE": "/home/user/.ssh/id_ed25519"
-      }
-    }
-  }
-}
-```
-
----
-
 ## Remote Host Conventions
 
 Raptor makes the following assumptions about the remote host layout (all paths are configurable):
@@ -293,7 +275,7 @@ source .env
 
 ### 2. Build
 ```bash
-go build -o raptor ./cmd/server
+go build ./cmd/raptor
 ```
 
 ### 3. Test with MCP Inspector
